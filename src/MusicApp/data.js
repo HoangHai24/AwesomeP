@@ -1,0 +1,88 @@
+const songs = [
+    {
+        title: "addictedtoyou",
+        artist: "Powfu",
+        artwork: require("../../assets/img/addictedtoyou.jpg"),
+        url: require("../../assets/audio/addictedtoyou.mp3"),
+        id: "1",
+    },
+    {
+        title: "anotherbrickinthewall",
+        artist: "Powfu",
+        artwork: require("../../assets/img/anotherbrickinthewall.jpg"),
+        url: require("../../assets/audio/anotherbrickinthewall.mp3"),
+        id: "2",
+    },
+    {
+        title: "cellosonata",
+        artist: "Powfu",
+        artwork: require("../../assets/img/cellosonata.jpg"),
+        url: require("../../assets/audio/cellosonata.mp3"),
+        id: "3",
+    },
+    {
+        title: "countingstars",
+        artist: "Powfu",
+        artwork: require("../../assets/img/countingstars.jpg"),
+        url: require("../../assets/audio/countingstars.mp3"),
+        id: "4",
+    },
+    {
+        title: "dontstopmenow",
+        artist: "Powfu",
+        artwork: require("../../assets/img/dontstopmenow.jpg"),
+        url: require("../../assets/audio/dontstopmenow.mp3"),
+        id: "5",
+    },
+    {
+        title: "getlucky",
+        artist: "Powfu",
+        artwork: require("../../assets/img/getlucky.png"),
+        url: require("../../assets/audio/getlucky.mp3"),
+        id: "6",
+    },
+    {
+        title: "grenade",
+        artist: "Powfu",
+        artwork: require("../../assets/img/grenade.jpg"),
+        url: require("../../assets/audio/grenade.mp3"),
+        id: "7",
+    },
+    {
+        title: "lights",
+        artist: "Powfu",
+        artwork: require("../../assets/img/lights.jpg"),
+        url: require("../../assets/audio/lights.mp3"),
+        id: "8",
+    },
+    {
+        title: "pianosonata",
+        artist: "Powfu",
+        artwork: require("../../assets/img/pianosonata.jpg"),
+        url: require("../../assets/audio/pianosonata.mp3"),
+        id: "9",
+    },
+    {
+        title: "renegades",
+        artist: "Powfu",
+        artwork: require("../../assets/img/renegades.jpg"),
+        url: require("../../assets/audio/renegades.mp3"),
+        id: "10",
+    },
+    {
+        title: "riptide",
+        artist: "Powfu",
+        artwork: require("../../assets/img/riptide.jpg"),
+        url: require("../../assets/audio/riptide.mp3"),
+        id: "11",
+    },
+    {
+        title: "symphony",
+        artist: "Powfu",
+        artwork: require("../../assets/img/symphony.jpg"),
+        url: require("../../assets/audio/symphony.mp3"),
+        id: "12",
+    },
+];
+
+export default songs;

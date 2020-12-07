@@ -144,6 +144,12 @@ android {
         }
     }
     signingConfigs {
+        release {
+                storeFile file('jindo-release-key.keystore')
+                storePassword 'Hoanghai@24'
+                keyAlias 'my-key-alias'
+                keyPassword 'Hoanghai@24'
+            }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
