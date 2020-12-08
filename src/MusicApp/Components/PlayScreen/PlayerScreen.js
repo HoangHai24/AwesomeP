@@ -23,11 +23,8 @@ import {itemPlay} from '../../store/actions';
 
 const PlayerScreen = (props) => {
 
-  // const isPlayerReady = useRef(false);
-  const index = useRef(0);
   const [songIndex, setSongIndex] = useState(0);
   const [volume, setVolume] = useState(1);
-  const [replay, setReplay] = useState(false);
 
   // useEffect(() => {
   //   TrackPlayer.setupPlayer().then(async () => {
@@ -74,16 +71,7 @@ const PlayerScreen = (props) => {
   // }, [songIndex]);
   useEffect(() => {
     console.log('playscreen track', props.track);
-  }, [])
-
-  const goNext = async () => {
-    setSongIndex(index.current + 1)
-    // await TrackPlayer.play();
-  };
-  const goPrv = async () => {
-    setSongIndex(index.current - 1)
-    // await TrackPlayer.play();
-  };
+  }, [props.track])
   const handleSetVol = (val) => {
     TrackPlayer.setVolume(val);
     setVolume(val);

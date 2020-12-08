@@ -5,8 +5,9 @@ import * as types from '../actions/actionType';
      state: null,
      track: null,
      shuffle: false,
-     replay: false,
-     playing: false
+     replay: 0, /*0: no, 1: replay list, 2: replay track*/
+     playing: false,
+     // replayList: false
  }
 
 const playerReducer = (state = initState, action) => {

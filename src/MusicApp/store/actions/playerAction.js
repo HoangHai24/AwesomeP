@@ -1,5 +1,6 @@
-import TrackPlayer, {Capability} from 'react-native-track-player';
+import TrackPlayer, {Capability, useProgress} from 'react-native-track-player';
 import * as types from './actionType';
+import Track from '../../Components/Album/Track';
 
 export const initializePlayback = () => {
     return async (dispatch, getState) => {
@@ -25,15 +26,14 @@ export const initializePlayback = () => {
                 TrackPlayer.getDuration()
             ])
             const { replay, shuffle, track } = getState().playerReducer;
-            console.log('position', position);
-            console.log('duration', duration)
+            // console.log('position', position);
+            // console.log('duration', duration)
             if(position && duration && position >= Math.floor(duration)){
-                if (replay){
+                if (replay === 2){
                     await TrackPlayer.seekTo(0);
                 }
-                if(shuffle){
+                if(shuffle && replay === 0){
                     let queue = await TrackPlayer.getQueue();
-                    console.log('queue', queue);
                     if (track !== null){
                         queue = queue.filter(item => item.id !== track.id)
                     }
@@ -42,7 +42,6 @@ export const initializePlayback = () => {
                     await TrackPlayer.skip(queue[index].id)
                 }
             }
-
         }, 500)
         dispatch({ type: types.INIT })
 
@@ -66,8 +65,9 @@ export const playbackTrack = () => {
         const trackId = await TrackPlayer.getCurrentTrack();
         const duration = await TrackPlayer.getDuration()
         const track = await TrackPlayer.getTrack(trackId);
-        console.log('duration', duration);
-        console.log('track', track)
+        // console.log('duration', duration);
+        // console.log('Queue Track', await TrackPlayer.getQueue())
+        // console.log('track playing', track)
         dispatch({
             type: types.TRACK,
             payload: {
@@ -81,6 +81,7 @@ export const playbackTrack = () => {
 export const setUserPlaying = (playing) => {
     return (dispatch, getState) => {
         const { track } = getState().playerReducer;
+        // console.log('{setUserPlaying} track', track)
         if (track) {
             if (playing) TrackPlayer.play()
             else TrackPlayer.pause();
@@ -103,15 +104,20 @@ export const setShuffle = (shuffle) => {
     }
 }
 
-export const setReplay = (replay) => {
-    return {
-        type: types.REPLAY,
-        payload: {
-            replay
-        }
+export const setReplay = () => {
+    return (dispatch, getState) =>{
+        let { replay } = getState().playerReducer;
+        if (replay === 2) replay = 0;
+        else replay += 1;
+        dispatch({
+            type: types.REPLAY,
+            payload: {
+                replay
+            }
+        })
     }
-}
 
+}
 export function itemPlay(id) {
     return async (dispatch, getState) => {
         // const { id: playId, items } = getState().playlistReducer
@@ -143,5 +149,33 @@ export function itemPlay(id) {
 }
 
 export const playbackQueueEnded = (position) => {
-
+    return async (dispatch, getState) => {
+        // console.log('Queue Track', await TrackPlayer.getQueue())
+        // console.log('track playing', await TrackPlayer.getCurrentTrack())
+        const trackId = await TrackPlayer.getCurrentTrack();
+        const duration = await TrackPlayer.getDuration()
+        const track = await TrackPlayer.getTrack(trackId);
+        const {replay} = getState().playerReducer;
+        let timer = setInterval(async () => {
+            const position = await TrackPlayer.getPosition();
+            if (position >= Math.floor(duration)){
+                // console.log('replay interval', replay);
+                if (replay === 1){
+                    const queue = await TrackPlayer.getQueue();
+                    await TrackPlayer.skip(queue[0].id);
+                    await dispatch(playbackTrack());
+                    dispatch(setUserPlaying(true))
+                    // console.log('state in interval', await TrackPlayer.getState());
+                }
+                clearInterval(timer)
+            }
+        }, 500)
+        dispatch({
+            type: types.TRACK,
+            payload: {
+                track,
+                duration
+            }
+        })
+    }
 }
