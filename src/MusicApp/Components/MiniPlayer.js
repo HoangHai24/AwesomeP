@@ -1,9 +1,11 @@
 import React, {useEffect} from "react";
-import { StyleSheet, Text, TouchableWithoutFeedback, TouchableOpacity, View } from "react-native";
+import {StyleSheet, Text, TouchableWithoutFeedback, TouchableOpacity, View, Image} from 'react-native';
 import {connect} from 'react-redux';
 import {itemPlay, setReplay, setUserPlaying} from '../store/actions';
-import Icon from 'react-native-vector-icons/AntDesign';
-import IconMate from 'react-native-vector-icons/MaterialIcons'
+// import Icon from 'react-native-vector-icons/AntDesign';
+import IconMate from 'react-native-vector-icons/MaterialIcons';
+import IconMateCom from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import TrackPlayer, {useProgress} from 'react-native-track-player';
 
 interface MiniPlayerProps {
@@ -19,17 +21,20 @@ interface MiniPlayerProps {
 const MiniPlayer = ({onPress, track, state, replay, onSetUserPlaying, onSetReplay}: MiniPlayerProps) => {
     const {position} = useProgress();
 
+    useEffect(() => {
+        console.log('track Miniplayer', track);
+    }, [])
     const renderState = () => {
         if (state === 'playing'){
             return (
-                <TouchableOpacity onPress={() => onSetUserPlaying(false)}>
-                    <Icon name="pausecircleo" color="green" size={24} />
+                <TouchableOpacity style={styles.boxIcon} onPress={() => onSetUserPlaying(false)}>
+                    <IconMateCom style={styles.iconControl} name="pause-circle" />
                 </TouchableOpacity>
             )
         }
         else return (
-                <TouchableOpacity onPress={() => onSetUserPlaying(true)}>
-                    <Icon name="playcircleo" color="white" size={24} />
+                <TouchableOpacity style={styles.boxIcon} onPress={() => onSetUserPlaying(true)}>
+                    <IconMateCom style={styles.iconControl} name="play-circle" />
                 </TouchableOpacity>
         )
     }
@@ -75,19 +80,40 @@ const MiniPlayer = ({onPress, track, state, replay, onSetUserPlaying, onSetRepla
         }
 
     }
+    const renderImg =() => {
+        if (track !== null){
+            return (
+                <Image
+                    style={styles.img}
+                    source={{uri: track.artwork.uri}}
+                />
+            )
+        }
+        else return null;
+    }
 
     return (
         <TouchableWithoutFeedback onPress={onPress}>
             <View style={styles.container}>
-                <Text style={styles.text}>{(track !== null) ? track.title : null}</Text>
-                <TouchableOpacity onPress={() => handlePrev()}>
-                    <IconMate color="#fff" name="skip-previous" size={24} />
-                </TouchableOpacity>
-                {renderState()}
-                <TouchableOpacity onPress={() => handleNext()}>
-                    <IconMate color="#fff" name="skip-next" size={24} />
-                </TouchableOpacity>
-                {renderReplay()}
+                {renderImg()}
+                <View style={{flex: 1}}>
+                    <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.trackName}>{(track !== null) ? track.title : null}</Text>
+                    <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.artist}>{(track !== null) ? track.artist : null}</Text>
+                </View>
+                <View style={styles.boxControl}>
+                    <TouchableOpacity style={styles.boxIcon}>
+                        <IconMateCom style={styles.iconControl} name="heart-outline" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.boxIcon} onPress={() => handlePrev()}>
+                        <IconMateCom style={styles.iconControl} name="skip-previous-circle" />
+                    </TouchableOpacity>
+                    {renderState()}
+                    <TouchableOpacity style={styles.boxIcon} onPress={() => handleNext()}>
+                        <IconMateCom style={styles.iconControl} name="skip-next-circle" />
+                    </TouchableOpacity>
+                </View>
+
+                {/*{renderReplay()}*/}
             </View>
         </TouchableWithoutFeedback>
     );
@@ -114,15 +140,42 @@ export default connect(mapStateToProps, mapDispatchToProps)(MiniPlayer);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#272829",
+        backgroundColor: "#fff",
         flexDirection: "row",
-        justifyContent: "space-between",
+        // justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: 16
+        paddingHorizontal: 5,
+        borderTopWidth: 3,
+        borderColor: '#F06966'
     },
-    text: {
-        color: "green",
-        fontSize: 18,
-        fontWeight: 'bold'
+    trackName: {
+        color: "rgba(0, 0, 0, 0.7)",
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 3
+    },
+    artist: {
+        color: "rgba(0, 0, 0, 0.7)",
+        fontSize: 12,
+        fontWeight: '300'
+    },
+    img: {
+        width: 45,
+        height: 45,
+        borderRadius: 10,
+        marginRight: 13
+    },
+    boxControl: {
+        width: 'auto',
+        flexDirection: 'row',
+        // flex: 1,
+        justifyContent: 'flex-end'
+    },
+    boxIcon: {
+        marginLeft: 10
+    },
+    iconControl: {
+        color: '#F06966',
+        fontSize: 35
     }
 });

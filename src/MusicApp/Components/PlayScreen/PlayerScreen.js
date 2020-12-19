@@ -5,7 +5,7 @@ import {
   Text,
   Dimensions,
   StyleSheet,
-    Image
+  Image, TouchableOpacity,
 } from 'react-native';
 
 import TrackPlayer, {
@@ -13,14 +13,10 @@ import TrackPlayer, {
   Event,
 } from 'react-native-track-player';
 import songs from '../../data';
-import Controller from './Controller';
-import SliderComp from './SliderComp';
-import Slider from '@react-native-community/slider';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Track from '../Album/Track';
 import {connect} from 'react-redux';
-import {itemPlay} from '../../store/actions';
-
+import ComponentController from './ComponentController';
+const {width} = Dimensions.get('window');
+const widthImg = width - 60;
 const PlayerScreen = (props) => {
 
   const [songIndex, setSongIndex] = useState(0);
@@ -69,9 +65,9 @@ const PlayerScreen = (props) => {
   //   }
   //   index.current = songIndex;
   // }, [songIndex]);
-  useEffect(() => {
-    console.log('playscreen track', props.track);
-  }, [props.track])
+  // useEffect(() => {
+  //   console.log('playscreen track', props.track);
+  // }, [props.track])
   const handleSetVol = (val) => {
     TrackPlayer.setVolume(val);
     setVolume(val);
@@ -79,46 +75,60 @@ const PlayerScreen = (props) => {
   const renderImg = () => {
     if (songs[songIndex]){
       return (
-          <Image
-              style={{width: 150, height: 150}}
-              source={(props.track !== null) ? {uri: props.track.artwork.uri} : songs[0].artwork}
-          />
+          <View style={styles.boxImg}>
+              <Image
+                  style={{
+                      width: widthImg,
+                      height: widthImg,
+                      borderRadius: widthImg,
+                      // marginTop: 40,
+                      // marginBottom: 70
+                  }}
+                  source={(props.track !== null) ? {uri: props.track.artwork.uri} : songs[0].artwork}
+              />
+          </View>
+
       )
     }
   }
-
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{width: '100%', paddingHorizontal: 20}}>
-        {/*<RectButton style={{padding: 16, backgroundColor: 'blue'}} {...{ onPress }} >*/}
-          <Icon name='expand-more' color='#fff' size={30}/>
-        {/*</RectButton>*/}
-      </View>
+      {/*<View style={{width: '100%', paddingHorizontal: 20}}>*/}
+      {/*  /!*<RectButton style={{padding: 16, backgroundColor: 'blue'}} {...{ onPress }} >*!/*/}
+      {/*    <Icon name='expand-more' color='#fff' size={30}/>*/}
+      {/*  /!*</RectButton>*!/*/}
+      {/*</View>*/}
       {renderImg()}
-      <View>
-        <Text style={styles.title}>{(props.track !== null) ? props.track.title : null}</Text>
-        <Text style={styles.artist}>{(songs[songIndex]) ? songs[songIndex].artist : null}</Text>
-      </View>
-
-      <SliderComp />
-      <Text style={{color: '#fff'}}>Volume</Text>
-      <Slider
-          style={{width: 150, height: 40}}
-          minimumValue={0}
-          value={volume}
-          maximumValue={1}
-          minimumTrackTintColor="#ffffff"
-          onSlidingComplete={handleSetVol}
-          maximumTrackTintColor="red"
-          thumbTintColor="#fff"
-      />
-      <View style={styles.timeContainer}>
-        <Text style={styles.timers}>{Math.floor(volume*10)}</Text>
-        <Text style={styles.timers}>{10}</Text>
-      </View>
-
-      <Controller />
+      {/*<View style={{flexDirection: 'row', width: '100%', paddingHorizontal: 20}}>*/}
+      {/*    <TouchableOpacity>*/}
+      {/*       <IconMate color='#F06966' name="minus-circle-outline" size={25} />*/}
+      {/*    </TouchableOpacity>*/}
+      {/*    <View style={{flex: 1}}>*/}
+      {/*        <Text style={styles.title}>{(props.track !== null) ? props.track.title : null}</Text>*/}
+      {/*        <Text style={styles.artist}>{(songs[songIndex]) ? songs[songIndex].artist : null}</Text>*/}
+      {/*    </View>*/}
+      {/*  <TouchableOpacity>*/}
+      {/*        <IconMate color='#F06966' name="heart-outline" size={25} />*/}
+      {/*    </TouchableOpacity>*/}
+      {/*</View>*/}
+      {/*<SliderComp />*/}
+      {/*<Text style={{color: '#fff'}}>Volume</Text>*/}
+      {/*<Slider*/}
+      {/*    style={{width: 150, height: 40}}*/}
+      {/*    minimumValue={0}*/}
+      {/*    value={volume}*/}
+      {/*    maximumValue={1}*/}
+      {/*    minimumTrackTintColor="#ffffff"*/}
+      {/*    onSlidingComplete={handleSetVol}*/}
+      {/*    maximumTrackTintColor="red"*/}
+      {/*    thumbTintColor="#fff"*/}
+      {/*/>*/}
+      {/*<View style={styles.timeContainer}>*/}
+      {/*  <Text style={styles.timers}>{Math.floor(volume*10)}</Text>*/}
+      {/*  <Text style={styles.timers}>{10}</Text>*/}
+      {/*</View>*/}
+      {/*<Controller />*/}
+      <ComponentController />
     </SafeAreaView>
   );
 }
@@ -136,24 +146,28 @@ const mapDispatchToProps = (dispatch) => {
 }
 export default connect(mapStateToProps,mapDispatchToProps)(PlayerScreen)
 const styles = StyleSheet.create({
+  container: {
+    // justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: width
+  },
+  boxImg: {
+      paddingTop: 40,
+      height: widthImg + 110,
+  },
   title: {
-    fontSize: 28,
+    fontSize: 22,
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: 'bold',
     textTransform: 'capitalize',
-    color: '#ffffff',
+    color: 'rgba(0, 0, 0, 0.7)',
+    marginBottom: 10
   },
   artist: {
-    fontSize: 18,
+    fontSize: 14,
     textAlign: 'center',
-    color: '#ffffff',
+    color: 'rgba(0, 0, 0, 0.7)',
     textTransform: 'capitalize',
-  },
-  container: {
-    backgroundColor: '#000',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    flex: 1
   },
   timers: {
     color: '#fff',

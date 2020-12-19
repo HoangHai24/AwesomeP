@@ -10,8 +10,13 @@ export const BUTTON_WIDTH = 200;
 
 const ShufflePlay = (props) => (
     <TouchableOpacity onPress={() => props.onSetShuffle(!props.shuffle)}>
-        <View style={[styles.button, {backgroundColor: (props.shuffle) ? "#1ed760" : null}]}>
-            <Text style={styles.label}>SHUFFLE PLAY</Text>
+        <View style={[styles.button, {
+            backgroundColor: "#F06966",
+            borderColor: "#fff",
+        }]}>
+            <Text style={[styles.label, {
+                color: "#fff",
+            }]}>{(props.shuffle) ? 'Bỏ phát ngẫu nhiên' : 'Phát ngẫu nhiên'}</Text>
         </View>
     </TouchableOpacity>
 );
@@ -32,7 +37,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(ShufflePlay)
 const styles = StyleSheet.create({
     button: {
         alignSelf: "center",
-        borderColor: '#fff',
         borderWidth: 1,
         height: BUTTON_HEIGHT,
         width: BUTTON_WIDTH,
@@ -40,8 +44,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     label: {
-        color: "#fff",
-        fontSize: 14,
+        fontSize: 18,
         textAlign: "center",
         fontWeight: "600",
     },

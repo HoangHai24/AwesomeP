@@ -5,11 +5,12 @@ import { PanGestureHandler, State } from "react-native-gesture-handler";
 import {clamp, onGestureEvent, timing, withSpring} from 'react-native-redash/lib/module/v1';
 import Player from "./Player";
 import MiniPlayer from "./MiniPlayer";
-import PlayerScreen from './PlayScreen/PlayerScreen';
-
+// import PlayerScreen from './PlayScreen/PlayerScreen';
+import TabNavigation from './TabNavigation';
+import TabPages from './TabPages'
 const { height } = Dimensions.get("window");
 const TABBAR_HEIGHT = 50;
-const MINIMIZED_PLAYER_HEIGHT = 42;
+const MINIMIZED_PLAYER_HEIGHT = 55;
 const SNAP_TOP = 0;
 const SNAP_BOTTOM = height - TABBAR_HEIGHT - MINIMIZED_PLAYER_HEIGHT;
 const config = {
@@ -107,9 +108,9 @@ export default () => {
                 <Animated.View
                     style={[styles.playerSheet, { transform: [{ translateY }] }]}
                 >
-
                     {/*<Player onPress={() => goDown.setValue(1)} />*/}
-                    <PlayerScreen />
+                    {/*<PlayerScreen onPress={() => goDown.setValue(1)}/>*/}
+                    <TabPages onPress={() => goDown.setValue(1)}/>
                     <Animated.View
                         pointerEvents="none"
                         style={{
@@ -128,17 +129,17 @@ export default () => {
                             height: MINIMIZED_PLAYER_HEIGHT
                         }}
                     >
-                        <MiniPlayer onPress={() => goUp.setValue(1)}
-                        value={'aaaa'}/>
+                        <MiniPlayer onPress={() => goUp.setValue(1)}/>
                     </Animated.View>
                 </Animated.View>
             </PanGestureHandler>
             <Animated.View
                 style={{ transform: [{ translateY: translateBottomTab }] }}
             >
-                <SafeAreaView style={styles.container}>
-                    <Text style={{textAlign: 'center', fontSize: 20, color: '#fff', fontWeight: 'bold'}}>BOTTOM</Text>
-                </SafeAreaView>
+                <TabNavigation />
+                {/*<SafeAreaView style={styles.container}>*/}
+                {/*    <Text style={{textAlign: 'center', fontSize: 20, color: '#fff', fontWeight: 'bold'}}>BOTTOM</Text>*/}
+                {/*</SafeAreaView>*/}
             </Animated.View>
         </>
     );
@@ -146,7 +147,7 @@ export default () => {
 const styles = StyleSheet.create({
     playerSheet: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: "cyan"
+        backgroundColor: "#fff"
     },
     container: {
         backgroundColor: "blue",

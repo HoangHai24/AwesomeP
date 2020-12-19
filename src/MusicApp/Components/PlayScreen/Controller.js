@@ -13,11 +13,11 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import {connect} from 'react-redux';
 import {setUserPlaying, setReplay, setShuffle} from '../../store/actions';
-import IconMate from 'react-native-vector-icons/MaterialIcons';
+import IconMate from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconIon from 'react-native-vector-icons/Ionicons'
 
 const Controller = (props) => {
   const {position} = useProgress();
-
   // const playbackState = usePlaybackState();
   // const [isPlaying, setIsPlaying] = useState('paused')
   // useEffect(() => {
@@ -49,20 +49,20 @@ const Controller = (props) => {
     switch (props.replay){
       case 1:
         return (
-            <TouchableOpacity onPress={() => handleReplay()}>
-              <IconMate color='green' name="repeat" size={45} />
+            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => handleReplay()}>
+              <IconMate color='#F06966' name="repeat" size={30} />
             </TouchableOpacity>
         );
       case 2:
         return (
-            <TouchableOpacity onPress={() => handleReplay()}>
-              <IconMate color='green' name="repeat-one" size={45} />
+            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => handleReplay()}>
+              <IconMate color='#F06966' name="repeat-once" size={30} />
             </TouchableOpacity>
         );
       default:
         return (
-            <TouchableOpacity onPress={() => handleReplay()}>
-              <IconMate color='#fff' name="repeat" size={45} />
+            <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => handleReplay()}>
+              <IconMate color='rgba(240, 105, 102, 0.3)' name="repeat" size={30} />
             </TouchableOpacity>
         );
     }
@@ -86,29 +86,33 @@ const Controller = (props) => {
   }
 
   const returnPlayBtn = () => {
-    switch (props.state) {
-      case 'playing':
-        return <Icon color="green" name="pause" size={45} />;
-      case 'paused':
-        return <Icon color="#fff" name="play-arrow" size={45} />;
-      default:
-        return <ActivityIndicator size={45} color="#fff"/>;
+    if (props.state === 'playing'){
+        return <IconMate color="#F06966" name="pause-circle" size={70} />;
     }
+    else return <IconMate color="#F06966" name="play-circle" size={70} />;
+        // switch (props.state) {
+    //   case 'playing':
+    //     return <IconMate color="#F06966" name="pause-circle" size={60} />;
+    //   case 'paused':
+    //     return <IconMate color="#F06966" name="play-circle" size={60} />;
+    //   default:
+    //     return <ActivityIndicator size={60} color="#F06966"/>;
+    // }
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => handleShuffle()}>
-        <Icon color={(props.shuffle) ? 'green' : '#fff'} name="dynamic-feed" size={45} />
+      <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => handleShuffle()}>
+        <IconIon color={(props.shuffle) ? '#F06966' : 'rgba(240, 105, 102, 0.3)'} name="shuffle-sharp" size={35} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => handlePrev()}>
-        <Icon color="#fff" name="skip-previous" size={45} />
+      <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => handlePrev()}>
+        <IconMate color="#F06966" name="skip-previous-circle" size={50} />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handlePlayPause()}>
         {returnPlayBtn()}
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => handleNext()}>
-        <Icon color="#fff" name="skip-next" size={45} />
+      <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => handleNext()}>
+        <IconMate color="#F06966" name="skip-next-circle" size={50} />
       </TouchableOpacity>
       {renderReplay()}
     </View>
@@ -142,6 +146,18 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: 250,
+    width: '85%',
   },
+  btn: {
+    zIndex: 1,
+    alignSelf: 'center',
+    // backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderRadius: 100,
+    borderColor: '#ddd',
+    // borderBottomWidth: 0,
+    shadowColor: 'rgba(0, 0, 0, 0.25)',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+  }
 });
